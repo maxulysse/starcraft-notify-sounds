@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# Fetch StarCraft 1 Protoss, Terran and Zerg Yes/What/Ready clips from the StarCraft wiki
-# into the orc-work-notify folders: Yes -> submit/, What -> attention/, Ready -> stop/.
-# Needs curl and ffmpeg. Writes to $SOUNDS_DIR (default ~/.claude/sounds). Existing .wav files are kept.
+# Download StarCraft 1 Yes/What/Ready clips from the StarCraft wiki into the
+# orc-work-notify folders submit/, attention/ and stop/ under $SOUNDS_DIR (default ~/.claude/sounds).
 set -euo pipefail
 
 API=https://starcraft.fandom.com/api.php
-# The wiki's file host answers 403 to a fake browser user agent and to requests without a wiki referer.
+# The wiki's file host returns 403 to browser user agents and to requests without a wiki referer.
 UA="${UA:-curl/8}"
 REF=https://starcraft.fandom.com/
 DEST="${SOUNDS_DIR:-$HOME/.claude/sounds}"
