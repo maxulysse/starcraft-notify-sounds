@@ -7,7 +7,7 @@ Download StarCraft 1 unit voice lines from the [StarCraft wiki](https://starcraf
 Needs `bash`, `curl` and `ffmpeg`.
 
 ```bash
-./fetch-starcraft.sh -p -t -z
+./fetch-starcraft.sh -ptz
 ```
 
 | Option            | Race    |

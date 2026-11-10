@@ -15,9 +15,18 @@ USAGE="usage: $0 [-p|--protoss] [-t|--terran] [-z|--zerg]"
 RACES=()
 for ARG in "$@"; do
   case "$ARG" in
-    -p|--protoss) RACES+=(Protoss) ;;
-    -t|--terran) RACES+=(Terran) ;;
-    -z|--zerg) RACES+=(Zerg) ;;
+    --protoss) RACES+=(Protoss) ;;
+    --terran) RACES+=(Terran) ;;
+    --zerg) RACES+=(Zerg) ;;
+    -?*) # short options, also combined: -ptz
+      for (( I = 1; I < ${#ARG}; I++ )); do
+        case "${ARG:I:1}" in
+          p) RACES+=(Protoss) ;;
+          t) RACES+=(Terran) ;;
+          z) RACES+=(Zerg) ;;
+          *) echo "$USAGE" >&2; exit 1 ;;
+        esac
+      done ;;
     *) echo "$USAGE" >&2; exit 1 ;;
   esac
 done
