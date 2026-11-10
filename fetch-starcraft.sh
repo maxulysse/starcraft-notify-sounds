@@ -43,9 +43,11 @@ save() {
     case "${BASH_REMATCH[1]}" in yes|attack) EVENT=submit ;; what|help) EVENT=attention ;; *) EVENT=stop ;; esac
     OUT="$DEST/$EVENT/$NAME.wav"
     [[ -f "$OUT" ]] && continue
-    if curl -sSfL -A "$UA" -e "$REF" -o "$TMP/clip.ogg" "$URL"; then
-      mkdir -p "$DEST/$EVENT"
-      ffmpeg -loglevel error -y -i "$TMP/clip.ogg" "$OUT" </dev/null && echo "$EVENT/${OUT##*/}"
+    # Convert to .part first: an interrupted run must not leave a cut-off .wav that later runs skip.
+    if curl -sSfL -A "$UA" -e "$REF" -o "$TMP/clip.ogg" "$URL" && mkdir -p "$DEST/$EVENT" &&
+      ffmpeg -loglevel error -y -i "$TMP/clip.ogg" -f wav "$OUT.part" </dev/null; then
+      mv "$OUT.part" "$OUT"
+      echo "$EVENT/${OUT##*/}"
     else
       echo "failed: $NAME" >&2
     fi
